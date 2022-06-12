@@ -8,7 +8,7 @@
 "aK" = (
 /mob/living/simple_animal/hostile/syndicate/ranged/shotgun{
 	access_card = 150;
-	loot = list(/obj/effect/gibspawner/human, /obj/item/stack/telecrystal);
+	loot = list(/obj/effect/gibspawner/human,/obj/item/stack/telecrystal);
 	name = "Syndicate Guard (223)"
 	},
 /obj/structure/peacekeeper_barricade/metal{
@@ -1830,7 +1830,7 @@
 "Rb" = (
 /obj/machinery/door/airlock/ship/security{
 	name = "Command";
-	req_access_txt = "151"
+	req_access_txt = "150"
 	},
 /obj/machinery/door/firedoor/border_only/directional/west,
 /obj/machinery/door/firedoor/border_only/directional/east,
@@ -47078,7 +47078,7 @@ mH
 bn
 nY
 hG
-kN
+CP
 ma
 ma
 ma
