@@ -202,9 +202,11 @@
 	var/mob/living/L = mob
 	switch(L.incorporeal_move)
 		if(INCORPOREAL_MOVE_BASIC)
-			var/T = get_step(L,direct)
+			var/T = get_step_multiz(mobloc, direct)
 			if(T)
 				L.forceMove(T)
+			else
+				to_chat(L, "<span class='warning'>There's nothing in that direction!</span>")
 			L.setDir(direct)
 		if(INCORPOREAL_MOVE_SHADOW)
 			if(prob(50))
@@ -235,7 +237,7 @@
 						return
 				var/target = locate(locx,locy,mobloc.z)
 				if(target)
-					L.loc = target
+					L.forceMove(target)
 					var/limit = 2//For only two trailing shadows.
 					for(var/turf/T in getline(mobloc, L.loc))
 						new /obj/effect/temp_visual/dir_setting/ninja/shadow(T, L.dir)
@@ -249,7 +251,7 @@
 					L.forceMove(T)
 			L.setDir(direct)
 		if(INCORPOREAL_MOVE_JAUNT) //Incorporeal move, but blocked by holy-watered tiles and salt piles.
-			var/turf/open/floor/stepTurf = get_step(L, direct)
+			var/turf/open/floor/stepTurf = get_step_multiz(mobloc, direct)
 			if(stepTurf)
 				for(var/obj/effect/decal/cleanable/food/salt/S in stepTurf)
 					to_chat(L, "<span class='warning'>[S] bars your passage!</span>")
@@ -265,10 +267,12 @@
 					to_chat(L, "<span class='warning'>Holy energies block your path!</span>")
 					return
 				L.forceMove(stepTurf)
+			else
+				to_chat(L, "<span class='warning'>There's nothing in that direction!</span>")
 			L.setDir(direct)
 
 		if(INCORPOREAL_MOVE_EMINENCE) //Incorporeal move for emincence. Blocks move like Jaunt but lets it pass through clockwalls
-			var/turf/open/floor/stepTurf = get_step(L, direct)
+			var/turf/open/floor/stepTurf = get_step_multiz(mobloc, direct)
 			var/turf/loccheck = get_turf(stepTurf)
 			if(stepTurf)
 				for(var/obj/effect/decal/cleanable/food/salt/S in stepTurf)
@@ -282,6 +286,8 @@
 					to_chat(L, "<span class='warning'>Holy energies block your path!</span>")
 					return
 				L.forceMove(stepTurf)
+			else
+				to_chat(L, "<span class='warning'>There's nothing in that direction!</span>")
 			L.setDir(direct)
 	return TRUE
 
@@ -480,10 +486,12 @@
 				return FALSE
 			if(T && is_station_level(T.z))//Multiz AI viewing of boardable ship is not currently supported.
 				AI.eyeobj.forceMove(T)
+				return TRUE
 			else
 				to_chat(AI, "<span class='warning'>You cannot move here</span>")
+		return FALSE
 
-	if(zMove(UP, TRUE))
+	if(isturf(loc) && zMove(UP, TRUE)) // NSV13 - No moving Z while inside another object
 		to_chat(src, "<span class='notice'>You move upwards.</span>")
 
 ///Moves a mob down a z level
@@ -499,17 +507,23 @@
 				return FALSE
 			if(T && is_station_level(T.z))//Multiz AI viewing of boardable ship is not currently supported.
 				AI.eyeobj.forceMove(T)
+				return TRUE
 			else
 				to_chat(AI, "<span class='warning'>You cannot move here</span>")
+		return FALSE
 
-	if(zMove(DOWN, TRUE))
+	if(isturf(loc) && zMove(DOWN, TRUE)) // NSV13 - No moving Z while inside another object
 		to_chat(src, "<span class='notice'>You move down.</span>")
 
 ///Move a mob between z levels, if it's valid to move z's on this turf
 /mob/proc/zMove(dir, feedback = FALSE)
 	if(dir != UP && dir != DOWN)
 		return FALSE
+	var/turf/source = get_turf(src)
 	var/turf/target = get_step_multiz(src, dir)
+	if(isliving(src)) //NSV13 - let living things do the fancy animation
+		source.travel_z(src, target, (dir == UP))
+		return
 	if(!target)
 		if(feedback)
 			to_chat(src, "<span class='warning'>There's nothing in that direction!</span>")

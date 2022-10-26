@@ -151,6 +151,7 @@
 					/obj/item/ship_weapon/parts/missile/warhead/decoy,
 					/obj/item/ship_weapon/parts/missile/warhead/decoy,
 					/obj/item/ship_weapon/parts/missile/warhead/decoy,
+					/obj/item/ship_weapon/parts/missile/warhead/decoy,
 					/obj/item/ship_weapon/parts/missile/warhead/decoy)
 	crate_name = "Decoy missile warheads"
 
@@ -170,6 +171,7 @@
 	desc = "A pack of 10 standard missile warheads."
 	cost = 1000
 	contains = list(/obj/item/ship_weapon/parts/missile/warhead,
+					/obj/item/ship_weapon/parts/missile/warhead,
 					/obj/item/ship_weapon/parts/missile/warhead,
 					/obj/item/ship_weapon/parts/missile/warhead,
 					/obj/item/ship_weapon/parts/missile/warhead,
@@ -265,8 +267,8 @@
 					/obj/item/fighter_component/canopy,
 					/obj/item/fighter_component/docking_computer,
 					/obj/item/fighter_component/battery,
-					/obj/item/fighter_component/primary/utility/hold,
-					/obj/item/fighter_component/secondary/utility/resupply,
+					/obj/item/fighter_component/secondary/utility/hold,
+					/obj/item/fighter_component/primary/utility/refuel,
 					/obj/item/fighter_component/countermeasure_dispenser)
 
 /datum/supply_pack/munitions/light_cannon

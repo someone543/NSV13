@@ -5,7 +5,7 @@
 
 /datum/map_config //NSV EDITED START
 	// Metadata
-	var/config_filename = "_maps/gladius.json"
+	var/config_filename = "_maps/atlas.json"
 	var/defaulted = TRUE  // set to FALSE by LoadConfig() succeeding
 	// Config from maps.txt
 	var/config_max_users = 0
@@ -19,8 +19,8 @@
 	var/map_path = "map_files/Atlas"
 	var/map_file = list("atlas.dmm", "atlas2.dmm")
 	var/ship_type = /obj/structure/overmap/nanotrasen/battlecruiser/starter
-	var/mining_ship_type = /obj/structure/overmap/nanotrasen/mining_cruiser/rocinante
-	var/mine_disable = FALSE //NSV13 option - Allow disabling of mineship loading.
+	var/mining_ship_type = null
+	var/mine_disable = TRUE //NSV13 option - Allow disabling of mineship loading.
 	var/mine_file = "Rocinante.dmm" //Nsv13 option
 	var/mine_path = "map_files/Mining/nsv13" //NSV13 option
 	var/list/omode_blacklist = list() //NSV13 - Blacklisted overmap modes - ie remove modes
@@ -149,15 +149,15 @@
 		log_world("map_config space_empty_levels is not a number!")
 		return
 
-	if(!("mine_disable" in json)) //Bypass mineload so we don't load any mining vessels period.
+	if("mine_disable" in json)
+		mine_disable = json["mine_disable"]
+	if(!mine_disable) //This ship needs a mining ship!
 		mine_file = json["mine_file"]
 		mine_path = json["mine_path"]
-		// "map_file": "BoxStation.dmm"
 		if (istext(mine_file))
 			if (!fexists("_maps/[mine_path]/[mine_file]"))
 				log_world("Map file ([mine_path]/[mine_file]) does not exist!")
 				return
-		// "map_file": ["Lower.dmm", "Upper.dmm"]
 		else if (islist(mine_file))
 			for (var/file in mine_file)
 				if (!fexists("_maps/[mine_path]/[file]"))
@@ -174,8 +174,6 @@
 			log_world("mining_ship_type missing from json!")
 			return
 
-	else
-		mine_disable = TRUE
 	//Nsv13 stuff. No CHECK_EXISTS because we don't want to yell at mappers if they don't override these two.
 	if("omode_blacklist" in json) //Which modes we want disabled on this map
 		omode_blacklist = json["omode_blacklist"]
