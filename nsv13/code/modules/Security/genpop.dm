@@ -112,7 +112,7 @@
 	//Attach a signal handler to the turf below for when someone passes through.
 	//Signal automatically gets unattached and reattached when we're moved.
 	var/static/list/loc_connections = list(
-		COMSIG_ATOM_ENTERED = .proc/on_entered,
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
 
@@ -352,7 +352,16 @@
 			desired_sentence = preset_time MINUTES
 			desired_sentence /= 10
 			desired_crime = preset_crime
-
+		if("adjust_time")
+			var/obj/item/card/id/prisoner/id = locate(params["id"])
+			if(!istype(id))
+				return
+			if(id.access == ACCESS_PRISONER) 
+				return
+			var/value = text2num(params["adjust"])
+			if(value && isnum(value))
+				id.sentence += value
+				id.sentence = clamp(id.sentence,0,MAX_TIMER)
 		if("release")
 			var/obj/item/card/id/prisoner/id = locate(params["id"])
 			if(!istype(id))

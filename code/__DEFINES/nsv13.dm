@@ -31,6 +31,10 @@
 #define CONQUEST_ROLE_LINECOOK "Line Cook"
 #define CONQUEST_ROLE_GRUNT "Autofill"
 
+//Lizard hiss preference options
+#define LIZARD_HISS_LEGACY "Legacy (s only)"
+#define LIZARD_HISS_EXPANDED "Expanded (x and s)"
+
 GLOBAL_DATUM_INIT(conquest_role_handler, /datum/conquest_role_handler, new)
 
 #define COMSIG_ATOM_DAMAGE_ACT "comsig_atom_damage_act" //Used when an atom takes damage.
@@ -117,3 +121,15 @@ GLOBAL_DATUM_INIT(conquest_role_handler, /datum/conquest_role_handler, new)
 #define OVERMAP_USER_ROLE_GUNNER (1<<1)
 #define OVERMAP_USER_ROLE_SECONDARY_GUNNER (1<<2)
 #define OVERMAP_USER_ROLE_OBSERVER (1<<3)
+
+#define HOLOMAP_EXTRA_STATIONMAP "stationmapformatted"
+#define HOLOMAP_EXTRA_STATIONMAPAREAS "stationareas"
+#define HOLOMAP_EXTRA_STATIONMAPSMALL "stationmapsmall"
+
+/// AI Hologram Related
+#define DUMMY_HUMAN_SLOT_HOLOFORM "dummy_holoform_generation" //NSV13 - AI Custom Holographic Form
+
+#define CUSTOM_HOLOFORM_DELAY 10 SECONDS //prevents spamming to make lag. it's pretty expensive to do this.
+
+#define HOLOFORM_FILTER_AI "FILTER_AI"
+#define HOLOFORM_FILTER_STATIC "FILTER_STATIC"

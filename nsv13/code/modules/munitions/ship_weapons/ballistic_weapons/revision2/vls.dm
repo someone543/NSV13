@@ -48,27 +48,19 @@
 	circuit = /obj/item/circuitboard/machine/vls
 	var/obj/structure/fluff/vls_hatch/hatch = null
 
-/obj/machinery/ship_weapon/vls/proc/on_entered(datum/source, atom/movable/AM, oldloc)
+/obj/machinery/ship_weapon/vls/proc/on_entered(datum/source, atom/movable/torp, oldloc)
 	SIGNAL_HANDLER
 
-	var/can_shoot_this = FALSE
-	for(var/_ammo_type in ammo_type)
-		if(istype(AM, _ammo_type))
-			can_shoot_this = TRUE
-			break
+	if(!is_type_in_list(torp, ammo_type))
+		return FALSE
 
-	if(can_shoot_this)
-		if(ammo?.len >= max_ammo)
-			return FALSE
-		if(loading)
-			return FALSE
-		if(state >= 2)
-			return FALSE
-		ammo += AM
-		AM.forceMove(src)
-		if(load_sound)
-			playsound(src, load_sound, 100, 1)
-		state = 2
+	if(ammo?.len >= max_ammo)
+		return FALSE
+	if(loading)
+		return FALSE
+	if(state >= STATE_LOADED)
+		return FALSE
+	load(torp)
 
 // Handles removal of stuff
 /obj/machinery/ship_weapon/vls/Exited(atom/movable/gone, direction)
@@ -97,7 +89,7 @@
 /obj/machinery/ship_weapon/vls/Initialize(mapload)
 	. = ..()
 	var/static/list/loc_connections = list(
-		COMSIG_ATOM_ENTERED = .proc/on_entered,
+		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
 	var/turf/T = SSmapping.get_turf_above(src)
@@ -140,12 +132,13 @@
 		return
 	hatch.toggle(HT_CLOSED)
 
-/obj/machinery/ship_weapon/vls/unload_magazine()
+/obj/machinery/ship_weapon/vls/unload()
+	loading = TRUE // This prevents torps from immediately falling back into the VLS tube
 	. = ..()
+	loading = FALSE
 	if(!hatch)
 		return
 	hatch.toggle(HT_CLOSED)
-
 
 /obj/structure/fluff/vls_hatch
 	name = "VLS Launch Hatch"
@@ -443,7 +436,7 @@
 /obj/structure/overmap/proc/on_missile_lock(obj/structure/overmap/firer, obj/item/projectile/proj)
 	add_enemy(firer)
 	torpedoes_to_target += proj
-	RegisterSignal(proj, COMSIG_PARENT_QDELETING, .proc/remove_torpedo_target)
+	RegisterSignal(proj, COMSIG_PARENT_QDELETING, PROC_REF(remove_torpedo_target))
 	if(dradis)
 		dradis.relay_sound('nsv13/sound/effects/fighters/launchwarning.ogg')
 		if(COOLDOWN_FINISHED(dradis, last_missile_warning))
