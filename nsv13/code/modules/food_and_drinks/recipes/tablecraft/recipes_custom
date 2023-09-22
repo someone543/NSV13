@@ -1,4 +1,4 @@
-/datum/crafting_recipe/food/hardtack //NSV13
+/datum/crafting_recipe/food/hardtack 
 	name = "Hardtack"
 	reqs = list(
 		/datum/reagent/water = 10,
