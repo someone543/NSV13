@@ -79,6 +79,7 @@ Been a mess since 2018, we'll fix it someday (probably)
 	. = ..()
 	if(.)
 		RegisterSignal(src, COMSIG_MOB_OVERMAP_CHANGE, PROC_REF(pilot_overmap_change))
+		RegisterSignal(user, COMSIG_MOB_DEATH, PROC_REF(pilot_death))
 
 /obj/structure/overmap/small_craft/key_down(key, client/user)
 	if(disruption && prob(min(95, disruption)))
@@ -553,6 +554,7 @@ Been a mess since 2018, we'll fix it someday (probably)
 	if(eject_mob && !eject(M, force))
 		return FALSE
 	UnregisterSignal(src, COMSIG_MOB_OVERMAP_CHANGE)
+	UnregisterSignal(src, COMSIG_MOB_DEATH)
 	M.stop_sound_channel(CHANNEL_SHIP_ALERT)
 	M.remove_verb(overmap_verbs)
 	return ..()
@@ -580,6 +582,11 @@ Been a mess since 2018, we'll fix it someday (probably)
 	SIGNAL_HANDLER
 	if(newOM != src)
 		INVOKE_ASYNC(src, PROC_REF(stop_piloting), M, FALSE, TRUE)
+
+/obj/structure/overmap/small_craft/proc/pilot_death(mob/living/M)
+	SIGNAL_HANDLER
+	var/obj/item/fighter_component/docking_computer/DC = loadout?.get_slot(HARDPOINT_SLOT_DOCKING)
+	DC.docking_mode = TRUE
 
 /obj/structure/overmap/small_craft/escapepod/eject(mob/living/M, force=FALSE)
 	. = ..()
