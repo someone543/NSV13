@@ -363,6 +363,8 @@
 	bound_height = initial(bound_height)
 	DC.docking_mode = FALSE
 	weapon_safety = TRUE
+	if(pilot.incapacitated()) //Don't let their fighter bounce back into the overmap
+		brakes = TRUE
 	if(pilot)
 		to_chat(pilot, "<span class='notice'>Docking complete. <b>Gun safeties have been engaged automatically.</b></span>")
 	SEND_SIGNAL(src, COMSIG_FTL_STATE_CHANGE)
