@@ -528,7 +528,7 @@ This is to account for sec Ju-Jitsuing boarding commandos.
 		call_backup(HA)
 
 	if(world.time >= HA.next_taunt_call)
-		HA.next_taunt_call = world.time + 45 SECONDS //Don't spam 'em
+		HA.next_taunt_call = world.time + 20 SECONDS //Don't spam
 		var/text = pick(H.taunts)
 		H.say(text)
 
