@@ -11,7 +11,7 @@ GLOBAL_LIST_EMPTY(knpcs)
 	var/guess_range = 12 //How far away will we assume they're still there after seeing them?
 	var/list/last_aggressors = list()
 	var/next_backup_call = 0 //Delay for calling for backup to avoid spam.
-	var/next_taunt_call = 0
+	var/next_taunt = 0
 	var/list/path = list()
 	var/turf/dest = null
 	var/tries = 0 //How quickly do we give up on following a path? To avoid lag...
@@ -527,8 +527,8 @@ This is to account for sec Ju-Jitsuing boarding commandos.
 	if(world.time >= HA.next_backup_call)
 		call_backup(HA)
 
-	if(world.time >= HA.next_taunt_call)
-		HA.next_taunt_call = world.time + 20 SECONDS //Don't spam
+	if(world.time >= HA.next_taunt)
+		HA.next_taunt = world.time + 20 SECONDS //Don't spam
 		var/text = pick(H.taunts)
 		H.say(text)
 
