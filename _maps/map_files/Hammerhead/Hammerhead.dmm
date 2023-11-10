@@ -32642,6 +32642,17 @@
 /obj/structure/chair/stool,
 /turf/open/floor/durasteel,
 /area/security/prison)
+"jMN" = (
+/obj/machinery/atmospherics/pipe/simple/general/hidden{
+	dir = 8
+	},
+/obj/machinery/door/airlock/ship/maintenance{
+	req_one_access_txt = "69"
+	},
+/obj/machinery/door/firedoor/border_only/directional/west,
+/obj/machinery/door/firedoor/border_only/directional/east,
+/turf/open/floor/plating,
+/area/nsv/hanger)
 "jMU" = (
 /obj/machinery/light/floor,
 /obj/machinery/atmospherics/pipe/simple/scrubbers/hidden/layer4{
@@ -105122,7 +105133,7 @@ utk
 kah
 kah
 kah
-ada
+jMN
 qdB
 qdB
 qdB
