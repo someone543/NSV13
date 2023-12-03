@@ -52,6 +52,9 @@
 	if(gunner)
 		QDEL_NULL(gunner)
 
+	//Buff the ships
+	spec_ghostship_changes()
+
 	//Insert the extra machines
 	if(!dradis)
 		if(mass >= MASS_SMALL)
@@ -63,6 +66,11 @@
 	if(!tactical)
 		tactical = new /obj/machinery/computer/ship/tactical/internal(src)
 		tactical.linked = src
+
+	//Lets ships with gauss use them
+	if(weapon_types[FIRE_MODE_GAUSS])
+		var/datum/ship_weapon/GA = weapon_types[FIRE_MODE_GAUSS]
+		GA.allowed_roles = OVERMAP_USER_ROLE_GUNNER
 
 	//Override AMS
 	weapon_types[FIRE_MODE_AMS] = null //Resolve this later to be auto
@@ -98,3 +106,16 @@
 
 	else //Try again later
 		addtimer(CALLBACK(src, PROC_REF(ghost_key_check), ghost), 1 SECONDS)
+
+/obj/structure/overmap/proc/spec_ghostship_changes() //Proc to buff ghost ships. Currently handles only fighters. Override if you want
+	if(mass == MASS_TINY) //Makes dogfighting fun
+		obj_integrity *= 6
+		max_integrity *= 6 //About as squishy, and fast, as a light fighter
+		forward_maxthrust *= 3.5
+		backward_maxthrust *= 3.5
+		side_maxthrust *= 2
+		integrity_failure *= 3.5
+		max_angular_acceleration *= 2
+		speed_limit *= 2.5
+		shots_left = 500 //Having 15 max cannon shots isn't fun
+

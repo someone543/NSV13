@@ -153,6 +153,8 @@
 	var/list/ams_data_source = AMS_LOCKED_TARGETS
 	var/next_ams_shot = 0
 	var/ams_targeting_cooldown = 1.5 SECONDS
+	var/ams_shot_limit = 5
+	var/ams_shots_fired = 0
 
 	// Railgun aim helper
 	var/last_tracer_process = 0
@@ -177,7 +179,8 @@
 	// It's terrible I know, but until we decide/are bothered enough to throw out the legacy drive (or subtype it), this'll have to do
 	var/obj/machinery/computer/ship/ftl_core/ftl_drive
 
-
+	//Misc variables
+	var/list/scanned = list() //list of scanned overmap anomalies
 	var/reserved_z = 0 //The Z level we were spawned on, and thus inhabit. This can be changed if we "swap" positions with another ship.
 	var/list/occupying_levels = list() //Refs to the z-levels we own for setting parallax and that, or for admins to debug things when EVERYTHING INEVITABLY BREAKS
 	var/torpedo_type = /obj/item/projectile/guided_munition/torpedo
@@ -229,6 +232,7 @@ Proc to spool up a new Z-level for a player ship and assign it a treadmill.
 	var/turf/exit = get_turf(locate(round(world.maxx * 0.5, 1), round(world.maxy * 0.5, 1), world.maxz)) //Plop them bang in the center of the system.
 	var/obj/structure/overmap/OM = new _path(exit) //Ship'll pick up the info it needs, so just domp eet at the exit turf.
 	OM.reserved_z = world.maxz
+	OM.overmap_flags |= OVERMAP_FLAG_ZLEVEL_CARRIER
 	OM.current_system = SSstar_system.find_system(OM)
 	if(OM.role == MAIN_OVERMAP) //If we're the main overmap, we'll cheat a lil' and apply our status to all of the Zs under "station"
 		for(var/z in SSmapping.levels_by_trait(ZTRAIT_STATION))
@@ -320,6 +324,7 @@ Proc to spool up a new Z-level for a player ship and assign it a treadmill.
 
 /obj/structure/overmap/LateInitialize()
 	. = ..()
+	armor = armor.setRating(arglist(OM_ARMOR)) //add the default armor values
 	if(role > NORMAL_OVERMAP)
 		SSstar_system.add_ship(src)
 		//reserved_z = src.z //Our "reserved" Z will always be kept for us, no matter what. If we, for example, visit a system that another player is on and then jump away, we are returned to our own Z.
@@ -544,6 +549,8 @@ Proc to spool up a new Z-level for a player ship and assign it a treadmill.
 		return FALSE
 	if(weapon_safety && !can_friendly_fire())
 		return FALSE
+	if(istype(target, /obj/machinery/button))
+		return target.attack_hand(user)
 	var/list/params_list = params2list(params)
 	if(target == src || istype(target, /atom/movable/screen) || (target in user.GetAllContents()) || params_list["alt"] || params_list["shift"])
 		return FALSE
@@ -577,6 +584,7 @@ Proc to spool up a new Z-level for a player ship and assign it a treadmill.
 		playsound(tactical, sound, 100, 1)
 	if(params_list["ctrl"]) //Ctrl click to lock on to people
 		start_lockon(target)
+		ams_shots_fired = 0
 		return TRUE
 	if(user == gunner)
 		var/datum/ship_weapon/SW = weapon_types[fire_mode]
