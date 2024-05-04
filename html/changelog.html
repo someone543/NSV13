@@ -56,58 +56,65 @@
 		-->
 		<div class="commit sansserif">
 
-			<h2 class="date">16 February 2024</h2>
-			<h3 class="author">PowerfulBacon updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="bugfix">Fixes the round not rebooting properly.</li>
-				<li class="code_imp">Adds in a task library for asynchronous behaviour handling.</li>
-			</ul>
-
-			<h2 class="date">19 January 2024</h2>
-			<h3 class="author">DeltaFire15 updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="refactor">The Torp and Missile factory automation machinery has been rewritten almost entirely to make it less clunky and more fun.</li>
-				<li class="rscadd">Automated Assemblers will now pick up components of the last manually inserted type if they pass in front of them!</li>
-				<li class="bugfix">The Thirring Drive Core sound loop you have never heard before works now!</li>
-				<li class="bugfix">The client_by_z list shouldn't be getting flooded with nulls anymore.</li>
-			</ul>
-
-			<h2 class="date">13 January 2024</h2>
+			<h2 class="date">03 May 2024</h2>
 			<h3 class="author">Bokkiewokkie updated:</h3>
 			<ul class="changes bgimages16">
-				<li class="rscadd">Added the option to get another ticket objective if Rubicon is already cleared</li>
-				<li class="tweak">Increased Rubicon objective player requirement to 10</li>
-				<li class="tweak">Mission briefing names will now be consistent in a round</li>
-				<li class="balance">Fleets will now be stronger after the main mission is done</li>
-				<li class="admin">Added button to hide/unhide a system on the starsystem manager</li>
-				<li class="admin">Automatically unhides systems selected for the "clear system" objective</li>
+				<li class="bugfix">Fixed fighters not hearing overmap messages from their mothership.</li>
+				<li class="spellcheck">Made it clear the Syndicate Crew antag preference is for PVP</li>
 			</ul>
 			<h3 class="author">DeltaFire15 updated:</h3>
 			<ul class="changes bgimages16">
-				<li class="rscadd">Overmap singularities now have more impactful effects, including but not limited to increased gravity inside nearby vessels, dampener interference, and improved directional pull.</li>
-				<li class="rscadd">Full hardsuits now provide 1G gravity protection against damage, though they do not improve movement.</li>
-				<li class="balance">Silicons will suffer from consistently very high gravity, starting at above 8G.</li>
-				<li class="tweak">Some interactions with high gravity previously limited to grav-sensitive individuals now are accessible to anyone, albeit at lower magnitude (generally 3G higher tolerance)</li>
-				<li class="bugfix">Starsystem persistence should now be slightly less volatile.</li>
-				<li class="config">The starsystem persistence config MUST be reset to the default starmap for the fixes in this PR to apply correctly.</li>
-			</ul>
-			<h3 class="author">covertcorvid updated:</h3>
-			<ul class="changes bgimages16">
-				<li class="bugfix">fixed the database query for the round endings</li>
+				<li class="balance">The BSA now goes kaboom when relayed instead of being essentially a ghost NAC shell.</li>
+				<li class="bugfix">The Eclipse no longer spawns a borg module that should never exist outside of mobs.</li>
+				<li class="bugfix">DNA no longer has some super weird code for flavor text, instead copying the one of the source mob.</li>
+				<li class="tweak">You can no longer stack interactions on walls. This is to prevent a runtime from actions that modify the type of them (deconstruction mainly).</li>
+				<li class="bugfix">Paper no longer runtimes if you do not have a pen in hand (???).</li>
+				<li class="bugfix">Traders no longer do some cursed things to create their trade items, instead using the all-powerful initial().</li>
+				<li class="bugfix">The stormdrive no longer runtimes if it has zero gas in it.</li>
+				<li class="bugfix">Some squad assignment stuff shouldn't try to use a list as datum anymore.</li>
 			</ul>
 
-			<h2 class="date">03 January 2024</h2>
+			<h2 class="date">21 April 2024</h2>
 			<h3 class="author">Bokkiewokkie updated:</h3>
 			<ul class="changes bgimages16">
-				<li class="imageadd">Changed Syndicate small craft color scheme to be more red</li>
-				<li class="code_imp">Renamed syndicate sabre and rapier sprite files</li>
+				<li class="bugfix">Updated the webmap link</li>
 			</ul>
 
-			<h2 class="date">29 December 2023</h2>
+			<h2 class="date">19 April 2024</h2>
+			<h3 class="author">KasparoVy updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="rscadd">added more custom prosthetic sprites</li>
+			</ul>
+
+			<h2 class="date">01 April 2024</h2>
+			<h3 class="author">Bokkiewokkie updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">Fixed auto-spooling not working for the Thirring FTL drive.</li>
+				<li class="balance">Enabled auto-spooling as an option for the Thirring FTL drive by default.</li>
+			</ul>
+
+			<h2 class="date">29 March 2024</h2>
+			<h3 class="author">Bobbanz1 updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">The destruction of a gauss turret now leaves behind the machine frame that had been used to construct it.</li>
+				<li class="code_imp">Gave the machine board of the gauss turret a req_components list with nothing inside it to prevent a runtime error from occurring.</li>
+				<li class="tweak">Rerouted the piping network in the assault course a bit so it resolves the issue raised about them missing when they were actually going through the window instead.</li>
+				<li class="rscdel">Removed some wiring that didn't do anything.</li>
+				<li class="bugfix">Engineering Lobby now has the wiring coming from maintenance actually hooked up to the grid rather than ending a tile early.</li>
+				<li class="rscadd">Gave the Aetherwhisp laser weaponry circuit boards so they don't get completely round removed when destroyed,</li>
+			</ul>
+			<h3 class="author">Bokkiewokkie updated:</h3>
+			<ul class="changes bgimages16">
+				<li class="bugfix">Fixed some bad initializations</li>
+				<li class="rscadd">Added the ability to research and print naval gun parts</li>
+				<li class="balance">Moved the gauss gun upgrade board to level 2 munitions research "Macro Ballistics"</li>
+				<li class="balance">Added science tiers to NSV researches</li>
+				<li class="balance">Made it so printable naval gun part circuits can be destroyed</li>
+			</ul>
 			<h3 class="author">DeltaFire15 updated:</h3>
 			<ul class="changes bgimages16">
-				<li class="bugfix">Syndicate AI boarders no longer silently breach your hull.</li>
-				<li class="bugfix">Thirring Drive Pylons should no longer be able to get stuck in the "shutting down" state.</li>
+				<li class="bugfix">Being recalled with an inactive thirring drive should no longer trap the ship in the darkness between stars.</li>
+				<li class="bugfix">Nucleium engine turfs now work. As may some other map cases of "nucleum" being used as incorrect term.</li>
 			</ul>
 		</div>
 
