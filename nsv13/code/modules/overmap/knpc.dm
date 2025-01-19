@@ -347,7 +347,7 @@ of a specific action goes up, to encourage skynet to go for that one instead.
 			if(get_dist(H, OM) > HA.view_range || !can_see(H, OM, HA.view_range))
 				continue
 			if(OM.occupant && !H.faction_check_mob(OM.occupant))
-				. += OM.occupant
+				. += OM //We target mech instead of the occupant, or else they can melee and shove the occupant out of the mech
 	for(var/obj/structure/overmap/OM as() in GLOB.overmap_objects) //Has to go through global objects due to happening on a ship's z level.
 		if(OM.z != H.z)
 			continue
