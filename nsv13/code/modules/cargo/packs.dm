@@ -120,6 +120,22 @@
 					/obj/item/ship_weapon/ammunition/torpedo/torpedo_casing)
 	crate_name = "Blank torpedo casings"
 
+/datum/supply_pack/munitions/torpedo_casings
+	name = "Missile casings"
+	desc = "A set of 10 missile casings, prebuilt but not pre-assembled. Ideal when used with our line of torpedo components."
+	cost = 500
+	contains = list(/obj/item/ship_weapon/ammunition/missile/missile_casing,
+					/obj/item/ship_weapon/ammunition/missile/missile_casing,
+					/obj/item/ship_weapon/ammunition/missile/missile_casing,
+					/obj/item/ship_weapon/ammunition/missile/missile_casing,
+					/obj/item/ship_weapon/ammunition/missile/missile_casing,
+					/obj/item/ship_weapon/ammunition/missile/missile_casing,
+					/obj/item/ship_weapon/ammunition/missile/missile_casing,
+					/obj/item/ship_weapon/ammunition/missile/missile_casing,
+					/obj/item/ship_weapon/ammunition/missile/missile_casing,
+					/obj/item/ship_weapon/ammunition/missile/missile_casing)
+	crate_name = "Blank missile casings"
+
 /datum/supply_pack/munitions/torpedo_construction_guidance
 	name = "Payload Guidance Modules"
 	desc = "A bulk order of 10 torpedo guidance modules. Warheads sold separately!"
@@ -201,7 +217,7 @@
 	crate_name = "Armour piercing torpedo warheads"
 
 /datum/supply_pack/munitions/decoy_warheads
-	name = "ECM Missile Warheads"
+	name = "Torpedo warheads (ECM)"
 	desc = "A pack of 10 electronic countermeasure warheads which excel at distracting the enemy's autonomous targeting system."
 	cost = 700
 	contains = list(/obj/item/ship_weapon/parts/missile/warhead/decoy,
@@ -214,7 +230,7 @@
 					/obj/item/ship_weapon/parts/missile/warhead/decoy,
 					/obj/item/ship_weapon/parts/missile/warhead/decoy,
 					/obj/item/ship_weapon/parts/missile/warhead/decoy)
-	crate_name = "Decoy missile warheads"
+	crate_name = "Decoy torpedo warheads"
 
 /datum/supply_pack/munitions/freight_warheads
 	name = "Torpedo warheads (freight)"
