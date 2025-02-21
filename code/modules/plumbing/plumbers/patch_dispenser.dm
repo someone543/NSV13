@@ -7,7 +7,10 @@
 
 	var/patch_name = "factory patch"
 	var/patch_size = 40
-	///the icon_state number for the patch.
+	///NSV13 the icon_state number for the patch.
+	var/chosen_patch_style = "bandaid_small_cross"
+	///NSV13 list of id's and icons for the pill selection of the ui
+	var/static/list/patch_styles = list()
 	var/list/stored_patches = list()
 	var/max_stored_patches = 3
 	///max amount of patches allowed on our tile before we start storing them instead
@@ -24,6 +27,14 @@
 	. = ..()
 	AddComponent(/datum/component/plumbing/simple_demand, bolt)
 
+	//NSV13 expertly copypasted from pill_press
+	if(!length(patch_styles))
+		for (var/each_patch_shape in PATCH_SHAPE_LIST)
+			var/list/style_list = list()
+			style_list["id"] = each_patch_shape
+			style_list["patch_icon_name"] = each_patch_shape
+			patch_styles += list(style_list)
+
 /obj/machinery/plumbing/patch_dispenser/process()
 	if(machine_stat & NOPOWER)
 		return
@@ -32,6 +43,7 @@
 		reagents.trans_to(P, patch_size)
 		P.name = patch_name
 		stored_patches += P
+		P.icon_state = chosen_patch_style //NSV13
 	if(stored_patches.len)
 		var/patch_amount = 0
 		for(var/obj/item/reagent_containers/pill/patch/P in loc)
@@ -57,12 +69,17 @@
 	var/list/data = list()
 	data["patch_size"] = patch_size
 	data["patch_name"] = patch_name
+	data["chosen_patch_style"] = chosen_patch_style //NSV13
+	data["patch_styles"] = patch_styles //NSV13
 	return data
 
 /obj/machinery/plumbing/patch_dispenser/ui_act(action, params)
 	if(..())
 		return
 	switch(action)
+		if("change_patch_style") //NSV13
+			chosen_patch_style = "[params["id"]]"
+			. = TRUE
 		if("change_patch_size")
 			patch_size = CLAMP(text2num(params["volume"]), 0, 40)
 			. = TRUE
